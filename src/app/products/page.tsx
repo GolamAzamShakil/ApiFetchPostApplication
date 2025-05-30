@@ -16,10 +16,9 @@ export default function products() {
       setLoading(true);
       setError(null);
       try {
+        const api = process.env.NEXT_PUBLIC_PRODUCT_API;
         //const response = productFetch();
-        const response = await axios.get<ProductApiModel>(
-          "https://glore-bd-backend-node-mongo.vercel.app/api/product"
-        );
+        const response = await axios.get<ProductApiModel>(`${api}`);
 
         if (response.data.succcess) {
           setProducts(response.data.data);

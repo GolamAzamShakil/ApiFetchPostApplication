@@ -5,7 +5,11 @@ import { DomainResponseModel } from '../data/interfaces';
 export async function domainCheck (data: string) {
     let payload: DomainResponseModel | undefined;
     try {
-      const response = await axios.get(`https://interview-task-green.vercel.app/task/domains/check/${data}.expressitbd.com`)
+      const baseApi = process.env.NEXT_PUBLIC_DOMAIN_BASE_API;
+      if (!baseApi) throw new Error('API base URL is not defined');
+      const finalApi =  baseApi.replace("{inputData}", encodeURIComponent(data.trim()));
+
+      const response = await axios.get(`${finalApi}`)
       payload = response.data;
       return payload?.data.taken
     } catch (error) {

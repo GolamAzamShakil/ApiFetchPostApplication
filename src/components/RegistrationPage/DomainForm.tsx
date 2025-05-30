@@ -23,6 +23,9 @@ import axios from "axios";
 type FormInput = z.infer<typeof DomainInputSchema>;
 
 export function DomainForm() {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
   const [domainError, setDomainError] = useState<string | null>();
 
   const form = useForm<FormInput>({
@@ -64,21 +67,32 @@ export function DomainForm() {
   };
 
   async function onSubmit(data: FormInput): Promise<void> {
+    setLoading(true)
+    setError(null)
+    setSuccess(false)
 
     if (domainError) return;
 
     try {
-      console.log(data)
+      const api = process.env.NEXT_PUBLIC_REGISTER_API
+      console.log(api)
 
-      const response = await axios.post("https://interview-task-green.vercel.app/task/stores/create", data, {
+      if (!api) throw new Error('API URL is not defined in environment variables')
+
+      const response = await axios.post(api, data, {
         headers: {
         'Content-Type': 'application/json',
        }
       });
-      console.log('Response:', response.data);
 
-      alert("Form submitted successfully!"); //alert("Form submitted successfully!" + JSON.stringify(data, null, 2));
-      form.reset();
+      if (response.status === 200) {
+        alert("Form submitted successfully!"); //alert("Form submitted successfully!" + JSON.stringify(data, null, 2));
+        form.reset();
+        setSuccess(true)
+      } else {
+        setError('Failed to submit form')
+      }
+
     } catch (error) {
       if (axios.isAxiosError(error)) {
       console.error('Axios error:', error.response?.data || error.message);
