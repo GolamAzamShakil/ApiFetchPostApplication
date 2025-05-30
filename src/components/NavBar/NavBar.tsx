@@ -16,7 +16,7 @@ const NavBar = () => {
   return (
     <header className="py-8 xl:py-10 text-neutral-950 dark:text-neutral-200">
       <div className="container mx-auto flex justify-between content-center items-center">
-        <div className="flex justify-start content-center items-center gap-3">
+        <div className="flex flex-row justify-start content-center items-center gap-3">
           <div className="md:hidden items-center">
             <Popover>
               <PopoverTrigger asChild className="">
@@ -24,8 +24,8 @@ const NavBar = () => {
                   <Menu className="h-36" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent>
-                <nav className="flex gap-7">
+              <PopoverContent className="max-w-[50%]">
+                <nav className="flex flex-col gap-5">
                   {NavigationRoutes.map((item, index) => {
                     return (
                       <Link
@@ -52,8 +52,8 @@ const NavBar = () => {
             </Link>
           </div>
         </div>
-        <div className="hidden md:flex items-center justify-end gap-7">
-          <nav className="flex gap-7">
+        <div className="flex items-center justify-end gap-7 mr-3">
+          <nav className="hidden md:flex gap-7">
             {NavigationRoutes.map((item, index) => {
               return (
                 <Link
