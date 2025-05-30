@@ -2,8 +2,7 @@
   "extends": ["next/core-web-vitals", "next/typescript"],
 
   
-    // ...
-    "react-hooks/rules-of-hooks": "warn", // Checks rules of Hooks
-    "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
-  
+    
+    /* "react-hooks/rules-of-hooks": "warn", 
+    "react-hooks/exhaustive-deps": "warn"  */
 }
