@@ -7,7 +7,6 @@ export async function domainCheck (data: string) {
     try {
       const response = await axios.get(`https://interview-task-green.vercel.app/task/domains/check/${data}.expressitbd.com`)
       payload = response.data;
-      console.log (payload?.data.taken)
       return payload?.data.taken
     } catch (error) {
       console.error ("Something went wrong: ", error)

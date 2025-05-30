@@ -4,7 +4,7 @@ import { z } from "zod";
 export const DomainInputSchema = z.object({
     name: z.string().min(1, "Name is required"),
     domain: z.string(),
-    location: z.string().min(1, "Location is required"),
+    country: z.string().min(1, "Location is required"),
     category: z.string().min(3, "Category is required"),
     currency: z.string().min(1, "Currency is required"),
     email: z.string().email("Invalid email address")

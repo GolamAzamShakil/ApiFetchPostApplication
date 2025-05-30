@@ -31,7 +31,7 @@ export function DomainForm() {
     defaultValues: {
       name: "",
       domain: "",
-      location: "",
+      country: "",
       category: "",
       currency: "",
       email: "",
@@ -50,9 +50,7 @@ export function DomainForm() {
 
     const domainExists = await domainCheck(domain);
     if (domainExists) {
-      console.log(domain);
       setDomainError("This domain name is already taken.");
-      console.log(domainError);
 
       form.setError("domain", {
         type: "manual",
@@ -66,9 +64,6 @@ export function DomainForm() {
   };
 
   async function onSubmit(data: FormInput): Promise<void> {
-    //form.clearErrors("domain");
-    //setErrorMessage(null);
-    //setMatchDomain(undefined);
 
     if (domainError) return;
 
@@ -78,7 +73,6 @@ export function DomainForm() {
       const response = await axios.post("https://interview-task-green.vercel.app/task/stores/create", data, {
         headers: {
         'Content-Type': 'application/json',
-        // Add other headers if needed, e.g. Authorization
        }
       });
       console.log('Response:', response.data);
@@ -151,7 +145,7 @@ export function DomainForm() {
 
                   <FormField
                     control={form.control}
-                    name="location"
+                    name="country"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Location</FormLabel>
@@ -161,12 +155,12 @@ export function DomainForm() {
                         >
                           <FormControl>
                             <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Enter your shop location" />
+                              <SelectValue placeholder="Select your shop location" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="bangladesh" className="capitalize">
-                              bangladesh
+                            <SelectItem value="Bangladesh" className="capitalize">
+                              Bangladesh
                             </SelectItem>
                             {/* <SelectItem value="second" className="capitalize">
                               second
@@ -192,18 +186,18 @@ export function DomainForm() {
                         >
                           <FormControl>
                             <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Enter your shop category" />
+                              <SelectValue placeholder="Select your shop category" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="first" className="capitalize">
-                              first
+                            <SelectItem value="First" className="capitalize">
+                              First
                             </SelectItem>
-                            <SelectItem value="second" className="capitalize">
-                              second
+                            <SelectItem value="Second" className="capitalize">
+                              Second
                             </SelectItem>
-                            <SelectItem value="third" className="capitalize">
-                              third
+                            <SelectItem value="Third" className="capitalize">
+                              Third
                             </SelectItem>
                           </SelectContent>
                         </Select>
@@ -223,11 +217,11 @@ export function DomainForm() {
                         >
                           <FormControl>
                             <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Enter your shop currency" />
+                              <SelectValue placeholder="Select your shop currency" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="bdt" className="">
+                            <SelectItem value="BDT" className="">
                               BDT
                             </SelectItem>
                             {/* <SelectItem value="second" className="capitalize">
