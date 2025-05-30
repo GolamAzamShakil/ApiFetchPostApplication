@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import axios from "axios";
 
 type FormInput = z.infer<typeof DomainInputSchema>;
 
@@ -64,7 +65,7 @@ export function DomainForm() {
 
   };
 
-  function onSubmit(data: FormInput) {
+  async function onSubmit(data: FormInput): Promise<void> {
     //form.clearErrors("domain");
     //setErrorMessage(null);
     //setMatchDomain(undefined);
@@ -72,13 +73,24 @@ export function DomainForm() {
     if (domainError) return;
 
     try {
-      
-
       console.log(data)
 
-      alert("Form submitted successfully!" + JSON.stringify(data, null, 2));
+      const response = await axios.post("https://interview-task-green.vercel.app/task/stores/create", data, {
+        headers: {
+        'Content-Type': 'application/json',
+        // Add other headers if needed, e.g. Authorization
+       }
+      });
+      console.log('Response:', response.data);
+
+      alert("Form submitted successfully!"); //alert("Form submitted successfully!" + JSON.stringify(data, null, 2));
       form.reset();
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.response?.data || error.message);
+    } else {
+      console.error('Unexpected error:', error);
+    }
       form.setError("root", {
         message: "Something went wrong",
       });
