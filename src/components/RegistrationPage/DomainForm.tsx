@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -19,13 +26,16 @@ import {
   SelectValue,
 } from "../ui/select";
 import axios from "axios";
+import { registerFormPost } from "@/model/api/RegisterFormPost";
+
+
 
 type FormInput = z.infer<typeof DomainInputSchema>;
 
 export function DomainForm() {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const [domainError, setDomainError] = useState<string | null>();
 
   const form = useForm<FormInput>({
@@ -34,16 +44,16 @@ export function DomainForm() {
     defaultValues: {
       name: "",
       domain: "",
-      country: "",
-      category: "",
-      currency: "",
+      country: "Bangladesh",
+      category: "First",
+      currency: "BDT",
       email: "",
     },
   });
 
   const domainValidity = async (data: string) => {
     const domain = data.trim();
-    
+
     if (!domain) {
       setDomainError(null);
       return;
@@ -63,42 +73,40 @@ export function DomainForm() {
       form.clearErrors("domain");
       setDomainError(null);
     }
-
   };
 
   async function onSubmit(data: FormInput): Promise<void> {
-    setLoading(true)
-    setError(null)
-    setSuccess(false)
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
 
     if (domainError) return;
 
     try {
-      const api = process.env.NEXT_PUBLIC_REGISTER_API
-      console.log(api)
+      const api = await registerFormPost();
 
-      if (!api) throw new Error('API URL is not defined in environment variables')
+      if (!api)
+        throw new Error("API URL is not defined in environment variables");
 
-      const response = await axios.post(api, data, {
+      const response = await axios.post(`${api}`, data, {
         headers: {
-        'Content-Type': 'application/json',
-       }
+          "Content-Type": "application/json",
+        },
       });
 
       if (response.status === 200) {
         alert("Form submitted successfully!"); //alert("Form submitted successfully!" + JSON.stringify(data, null, 2));
         form.reset();
-        setSuccess(true)
+        setSuccess(true);
       } else {
-        setError('Failed to submit form')
+        setError("Failed to submit form");
       }
-
     } catch (error) {
       if (axios.isAxiosError(error)) {
-      console.error('Axios error:', error.response?.data || error.message);
-    } else {
-      console.error('Unexpected error:', error);
-    }
+        console.error("Axios error:", error.response?.data || error.message);
+      } else {
+        console.error("Unexpected error:", error);
+      }
       form.setError("root", {
         message: "Something went wrong",
       });
@@ -117,8 +125,6 @@ export function DomainForm() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
               <div className="flex">
                 <div className="space-y-4">
-
-
                   <FormField
                     control={form.control}
                     name="name"
@@ -127,7 +133,11 @@ export function DomainForm() {
                       <FormItem>
                         <FormLabel>Name</FormLabel>
                         <FormControl>
-                          <Input className="w-full" placeholder="Enter your shop name" {...field} />
+                          <Input
+                            className="w-full"
+                            placeholder="Enter your shop name"
+                            {...field}
+                          />
                           {}
                         </FormControl>
                       </FormItem>
@@ -152,7 +162,9 @@ export function DomainForm() {
                             autoComplete="off"
                           />
                         </FormControl>
-                        <FormMessage>{form.formState.errors.domain?.message || domainError}</FormMessage>
+                        <FormMessage>
+                          {form.formState.errors.domain?.message || domainError}
+                        </FormMessage>
                       </FormItem>
                     )}
                   />
@@ -173,7 +185,10 @@ export function DomainForm() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="Bangladesh" className="capitalize">
+                            <SelectItem
+                              value="Bangladesh"
+                              className="capitalize"
+                            >
                               Bangladesh
                             </SelectItem>
                             {/* <SelectItem value="second" className="capitalize">
@@ -257,7 +272,11 @@ export function DomainForm() {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input className="w-full" placeholder="Enter your email" {...field} />
+                          <Input
+                            className="w-full"
+                            placeholder="Enter your email"
+                            {...field}
+                          />
                           {}
                         </FormControl>
                       </FormItem>
@@ -278,15 +297,11 @@ export function DomainForm() {
                   /> */}
                 </div>
               </div>
-              <Button type="submit" disabled={form.formState.isSubmitting}>Register</Button>
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                Register
+              </Button>
             </form>
           </Form>
-
-          {/* <div className="">
-            {matchDomain !== undefined && (
-                <p>{matchDomain ? "This domain is not available." : "This domain is available!"}</p>
-            )}
-        </div> */}
         </CardContent>
       </Card>
     </div>

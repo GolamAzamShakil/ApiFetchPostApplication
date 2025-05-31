@@ -1,11 +1,10 @@
 "use server"
 
-export async function productFetch() {
+export async function registerFormPost() {
     try {
-        const api = process.env.PRODUCT_API
+        const api = process.env.REGISTER_API
         if (!api) throw new Error('API URL is not defined in environment variables')
         
-        //const response = await axios.get<ProductApiModel>("")
         return api;
     } catch (error) {
         console.error ("Something went wrong: ", error)

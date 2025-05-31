@@ -1,8 +1,9 @@
-"use client"
+"use client";
 import { motion } from "motion/react";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+
 
 
 export default function Home() {

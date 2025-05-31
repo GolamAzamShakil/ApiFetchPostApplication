@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { domainCheckingProcess } from '../data/DomainCheckingProcess';
 import { DomainResponseModel } from '../data/interfaces';
 
 export async function domainCheck (data: string) {
